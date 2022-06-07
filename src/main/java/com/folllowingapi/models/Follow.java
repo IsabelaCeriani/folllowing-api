@@ -1,19 +1,21 @@
 package com.folllowingapi.models;
 
 //import jakarta.persistence.*;
-import jdk.jfr.Enabled;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
-
 import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.PrePersist;
 import java.util.Date;
 import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "Follow")
+//@Table(name = "Follow")
 public class Follow {
 
     @Id
