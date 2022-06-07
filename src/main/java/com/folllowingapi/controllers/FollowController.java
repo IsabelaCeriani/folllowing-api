@@ -30,14 +30,14 @@ public class FollowController {
     }
 
     @GetMapping("/getFollowers/{id}")
-    public ResponseEntity<List<UUID>> getFolllowers(@PathVariable UUID id){
-        return ResponseEntity.ok(followService.getFollowers(id));
+    public ResponseEntity<List<UUID>> getFolllowers(@PathVariable UUID id, @RequestParam(defaultValue = "20") Integer pageSize){
+        return ResponseEntity.ok(followService.getFollowers(id, pageSize));
 
     }
 
     @GetMapping("/getFollowing/{id}")
-    public ResponseEntity<List<UUID>> getFollowing(@PathVariable UUID id){
-        return ResponseEntity.ok(followService.getFollowing(id));
+    public ResponseEntity<List<UUID>> getFollowing(@PathVariable UUID id, @RequestParam(defaultValue = "20") Integer pageSize){
+        return ResponseEntity.ok(followService.getFollowing(id, pageSize));
 
     }
 

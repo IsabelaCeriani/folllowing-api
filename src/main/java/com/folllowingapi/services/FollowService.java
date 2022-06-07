@@ -5,8 +5,11 @@ import com.folllowingapi.dtos.FollowDTO;
 import com.folllowingapi.models.Follow;
 import com.folllowingapi.repositories.FollowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -35,16 +38,18 @@ public class FollowService {
         return followDTO;
     }
 
-    public List<UUID> getFollowers(UUID id) {
-        List<Follow> allByFollowedUserId = followRepository.findAllByFollowedUserId(id);
+    public List<UUID> getFollowers(UUID id, Integer pageSize) {
+        Pageable pageable = (Pageable) PageRequest.of(0, pageSize);
+        Page<Follow> allByFollowedUserId = followRepository.findAllByFollowedUserId(id, pageable);
         return allByFollowedUserId
                 .stream()
                 .map(Follow::getFollowerUserId)
                 .collect(Collectors.toList());
     }
 
-    public List<UUID> getFollowing(UUID id) {
-        List<Follow> allUserFollows = followRepository.findAllByFollowerUserId(id);
+    public List<UUID> getFollowing(UUID id, Integer pageSize) {
+        Pageable pageable = (Pageable) PageRequest.of(0, pageSize);
+        Page<Follow> allUserFollows = followRepository.findAllByFollowerUserId(id, pageable);
         return allUserFollows
                 .stream()
                 .map(Follow::getFollowedUserId)
