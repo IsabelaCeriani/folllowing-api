@@ -18,11 +18,10 @@ services:
     container_name: follow_db
     image: postgres:12
     ports:
-      - 5434:5434
+      - 5434:5432
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin
-      POSTGRES_DB: followers-db
     volumes:
       - pgdata:/var/lib/postgresql/data
 
