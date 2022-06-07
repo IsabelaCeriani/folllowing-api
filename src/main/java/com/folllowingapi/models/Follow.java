@@ -1,11 +1,12 @@
 package com.folllowingapi.models;
 
-import jakarta.persistence.*;
+//import jakarta.persistence.*;
 import jdk.jfr.Enabled;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
@@ -15,7 +16,6 @@ import java.util.UUID;
 @Table(name = "Follow")
 public class Follow {
 
-    @jakarta.persistence.Id
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO )
     private UUID id;
