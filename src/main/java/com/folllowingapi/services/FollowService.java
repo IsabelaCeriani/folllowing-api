@@ -39,17 +39,17 @@ public class FollowService {
     }
 
     public List<UUID> getFollowers(UUID id, Integer pageSize) {
-        Pageable pageable = (Pageable) PageRequest.of(0, pageSize);
-        Page<Follow> allByFollowedUserId = followRepository.findAllByFollowedUserId(id, pageable);
+//        Pageable pageable = (Pageable) PageRequest.of(0, pageSize);
+        List<Follow> allByFollowedUserId = followRepository.findAllByFollowedUserId(id);
         return allByFollowedUserId
                 .stream()
                 .map(Follow::getFollowerUserId)
                 .collect(Collectors.toList());
     }
 
-    public List<UUID> getFollowing(UUID id, Integer pageSize) {
-        Pageable pageable = (Pageable) PageRequest.of(0, pageSize);
-        Page<Follow> allUserFollows = followRepository.findAllByFollowerUserId(id, pageable);
+    public List<UUID> getFollowing(UUID id) {
+//        Pageable pageable = (Pageable) PageRequest.of(0, pageSize);
+        List<Follow> allUserFollows = followRepository.findAllByFollowerUserId(id);
         return allUserFollows
                 .stream()
                 .map(Follow::getFollowedUserId)
