@@ -6,10 +6,11 @@ import com.folllowingapi.models.Follow;
 import com.folllowingapi.repositories.FollowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -38,22 +39,24 @@ public class FollowService {
         return followDTO;
     }
 
-    public List<UUID> getFollowers(UUID id, Integer pageSize) {
-//        Pageable pageable = (Pageable) PageRequest.of(0, pageSize);
+    public Page<UUID> getFollowers(UUID id) {
+//        Pageable pageable = PageRequest.of(0, pageSize);
         List<Follow> allByFollowedUserId = followRepository.findAllByFollowedUserId(id);
-        return allByFollowedUserId
+        List<UUID> followersIdsList = allByFollowedUserId
                 .stream()
                 .map(Follow::getFollowerUserId)
                 .collect(Collectors.toList());
+        return new PageImpl<UUID>(followersIdsList);
     }
 
-    public List<UUID> getFollowing(UUID id) {
+    public Page<UUID> getFollowing(UUID id) {
 //        Pageable pageable = (Pageable) PageRequest.of(0, pageSize);
         List<Follow> allUserFollows = followRepository.findAllByFollowerUserId(id);
-        return allUserFollows
+        List<UUID> followingIdsList =  allUserFollows
                 .stream()
                 .map(Follow::getFollowedUserId)
                 .collect(Collectors.toList());
+        return new PageImpl<UUID>(followingIdsList);
 
     }
 }

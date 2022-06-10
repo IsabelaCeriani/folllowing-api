@@ -4,6 +4,8 @@ package com.folllowingapi.controllers;
 import com.folllowingapi.dtos.FollowDTO;
 import com.folllowingapi.services.FollowService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,13 +32,13 @@ public class FollowController {
     }
 
     @GetMapping("/getFollowers/{id}")
-    public ResponseEntity<List<UUID>> getFolllowers(@PathVariable UUID id, @RequestParam(defaultValue = "20") Integer pageSize){
-        return ResponseEntity.ok(followService.getFollowers(id, pageSize));
+    public ResponseEntity<Page<UUID>> getFolllowers(@PathVariable UUID id){
+        return ResponseEntity.ok(followService.getFollowers(id));
 
     }
 
     @GetMapping("/getFollowing/{id}")
-    public ResponseEntity<List<UUID>> getFollowing(@PathVariable UUID id){
+    public ResponseEntity<Page<UUID>> getFollowing(@PathVariable UUID id, Pageable pageable){
         return ResponseEntity.ok(followService.getFollowing(id));
 
     }
