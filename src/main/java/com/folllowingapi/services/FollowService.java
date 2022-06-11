@@ -3,6 +3,7 @@ package com.folllowingapi.services;
 
 import com.folllowingapi.dtos.FollowDTO;
 import com.folllowingapi.models.Follow;
+import com.folllowingapi.pageConfig.RestResponsePage;
 import com.folllowingapi.repositories.FollowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -50,13 +51,18 @@ public class FollowService {
     }
 
     public Page<UUID> getFollowing(UUID id) {
+        return new RestResponsePage<UUID>(getFollowingList(id));
+
+    }
+
+    public List<UUID> getFollowingList(UUID id) {
+        System.out.println("entre");
 //        Pageable pageable = (Pageable) PageRequest.of(0, pageSize);
         List<Follow> allUserFollows = followRepository.findAllByFollowerUserId(id);
-        List<UUID> followingIdsList =  allUserFollows
+        return   allUserFollows
                 .stream()
                 .map(Follow::getFollowedUserId)
                 .collect(Collectors.toList());
-        return new PageImpl<UUID>(followingIdsList);
 
     }
 }
