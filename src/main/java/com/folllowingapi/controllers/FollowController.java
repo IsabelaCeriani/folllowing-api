@@ -25,6 +25,17 @@ public class FollowController {
        return ResponseEntity.ok(followService.followUser(followDTO));
     }
 
+    @PostMapping("/toggleFollow")
+    public ResponseEntity<FollowDTO> toggleFollow(@RequestBody FollowDTO followDTO){
+        return ResponseEntity.ok(followService.toggleFollow(followDTO));
+    }
+
+    @GetMapping("/getIsFollowing")
+    public ResponseEntity<Boolean> getIsFollowing(@RequestBody FollowDTO followDTO){
+        return ResponseEntity.ok(followService.getIsFollowing(followDTO));
+    }
+
+
     @PostMapping("/unfollowUser")
     public ResponseEntity<FollowDTO> unfollowUser(@RequestBody FollowDTO followDTO){
         return ResponseEntity.ok(followService.unfollowUser(followDTO));
@@ -39,12 +50,12 @@ public class FollowController {
 
 
     @GetMapping("/getFollowing/{id}")
-    public ResponseEntity<Page<UUID>> getFollowing(@PathVariable UUID id, Pageable pageable){
+    public ResponseEntity<Page<UUID>> getFollowing(@PathVariable UUID id){
         return ResponseEntity.ok(followService.getFollowing(id));
     }
 
     @GetMapping("/getFollowingList/{id}")
-    public ResponseEntity<List<UUID>> getFollowingList(@PathVariable UUID id, Pageable pageable){
+    public ResponseEntity<List<UUID>> getFollowingList(@PathVariable UUID id){
         return ResponseEntity.ok(followService.getFollowingList(id));
     }
 

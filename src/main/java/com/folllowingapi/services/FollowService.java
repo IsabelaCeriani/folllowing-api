@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -24,10 +25,15 @@ public class FollowService {
 
     public FollowDTO followUser(FollowDTO followDTO) {
         if(followExists(followDTO.getFollowerUserId(), followDTO.getFollowedUserId())) throw new RuntimeException("Already following this user");
+        return createFollow(followDTO);
+    }
+
+    private FollowDTO createFollow(FollowDTO followDTO) {
         Follow follow = followDTO.toFollow();
         followRepository.save(follow);
         return followDTO;
     }
+
     public boolean followExists(UUID followedID, UUID followerID){
         return followRepository.findByFollowerUserIdAndFollowedUserId(followerID, followedID).isPresent();
     }
@@ -64,5 +70,18 @@ public class FollowService {
                 .map(Follow::getFollowedUserId)
                 .collect(Collectors.toList());
 
+    }
+
+    public FollowDTO toggleFollow(FollowDTO followDTO) {
+        Optional<Follow> followOptional = followRepository.findByFollowerUserIdAndFollowedUserId(followDTO.getFollowerUserId(), followDTO.getFollowedUserId());
+        if(followOptional.isPresent()) {
+            followRepository.delete(followOptional.get());
+            return followDTO;
+        }
+        return createFollow(followDTO);
+    }
+
+    public Boolean getIsFollowing(FollowDTO followDTO) {
+        return followExists(followDTO.getFollowerUserId(), followDTO.getFollowedUserId());
     }
 }
