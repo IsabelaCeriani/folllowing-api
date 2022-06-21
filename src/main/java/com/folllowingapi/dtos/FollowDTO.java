@@ -16,6 +16,8 @@ public class FollowDTO {
     private UUID followerUserId;
     private UUID followedUserId;
 
+    public FollowDTO(){}
+
 
 
     public Follow toFollow() {
