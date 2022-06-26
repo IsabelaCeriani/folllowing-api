@@ -40,6 +40,12 @@ dependencies {
 	// https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 
+	// https://mvnrepository.com/artifact/org.keycloak/keycloak-spring-boot-starter
+	implementation 'org.keycloak:keycloak-spring-boot-starter:18.0.1'
+
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
+	implementation 'org.springframework.boot:spring-boot-starter-security:2.7.0'
+
 	implementation 'org.springframework.metrics:spring-metrics:0.5.1.RELEASE'
 
 }
