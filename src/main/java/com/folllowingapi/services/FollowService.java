@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,6 +23,8 @@ public class FollowService {
 
     @Autowired
     FollowRepository followRepository;
+
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     public FollowDTO followUser(FollowDTO followDTO) {
         if(followExists(followDTO.getFollowerUserId(), followDTO.getFollowedUserId())) throw new RuntimeException("Already following this user");
@@ -31,10 +34,12 @@ public class FollowService {
     private FollowDTO createFollow(FollowDTO followDTO) {
         Follow follow = followDTO.toFollow();
         followRepository.save(follow);
+        logger.info("Added follow: " + follow.getId());
         return followDTO;
     }
 
     public boolean followExists(UUID followedID, UUID followerID){
+        logger.info("Checking if follow exists");
         return followRepository.findByFollowerUserIdAndFollowedUserId(followerID, followedID).isPresent();
     }
 
@@ -43,6 +48,7 @@ public class FollowService {
                 .findByFollowerUserIdAndFollowedUserId(followDTO.getFollowerUserId(), followDTO.getFollowedUserId())
                 .orElseThrow(() -> new IllegalArgumentException("Unable to unfollow because follow does not exists"));
         followRepository.delete(follow);
+        logger.info("Deleted follow: " + follow.getId());
         return followDTO;
     }
 
@@ -53,6 +59,7 @@ public class FollowService {
                 .stream()
                 .map(Follow::getFollowerUserId)
                 .collect(Collectors.toList());
+        logger.info("Found followers: " + followersIdsList);
         return new PageImpl<UUID>(followersIdsList);
     }
 
@@ -65,6 +72,7 @@ public class FollowService {
         System.out.println("entre");
 //        Pageable pageable = (Pageable) PageRequest.of(0, pageSize);
         List<Follow> allUserFollows = followRepository.findAllByFollowerUserId(id);
+        logger.info("Found following: " + allUserFollows);
         return   allUserFollows
                 .stream()
                 .map(Follow::getFollowedUserId)
@@ -78,10 +86,12 @@ public class FollowService {
             followRepository.delete(followOptional.get());
             return followDTO;
         }
+        logger.info("Adding follow: " + followDTO.getFollowedUserId());
         return createFollow(followDTO);
     }
 
     public Boolean getIsFollowing(FollowDTO followDTO) {
+        logger.info("Checking if following");
         return followExists(followDTO.getFollowerUserId(), followDTO.getFollowedUserId());
     }
 }
