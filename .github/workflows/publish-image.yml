@@ -54,4 +54,16 @@ jobs:
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }} 
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Update server
+          uses: appleboy/ssh-action@master
+          with:
+            host: ${{ secrets.PROD_IP }}
+            username: ${{ secrets.USERNAME }}
+            key: ${{ secrets.PROD_KEY }}
+            script: |
+              cd Backend
+              sudo docker-compose stop ui-server
+              sudo docker-compose pull ui-server
+              sudo docker-compose up -d ui-server
