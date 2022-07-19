@@ -57,13 +57,13 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Update server
-          uses: appleboy/ssh-action@master
-          with:
-            host: ${{ secrets.PROD_IP }}
-            username: ${{ secrets.USERNAME }}
-            key: ${{ secrets.PROD_KEY }}
-            script: |
-              cd Backend
-              sudo docker-compose stop ui-server
-              sudo docker-compose pull ui-server
-              sudo docker-compose up -d ui-server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PROD_IP }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PROD_KEY }}
+          script: |
+            cd Backend
+            sudo docker-compose stop follow-api
+            sudo docker-compose pull follow-api
+            sudo docker-compose up -d follow-api
