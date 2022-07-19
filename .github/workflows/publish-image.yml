@@ -67,3 +67,4 @@ jobs:
             sudo docker-compose stop follow-api
             sudo docker-compose pull follow-api
             sudo docker-compose up -d follow-api
+
