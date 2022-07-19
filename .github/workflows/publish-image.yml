@@ -2,7 +2,7 @@ name: Create and publish Docker image
 
 on:
   push:
-    branches: ['master']
+    branches: ['develop']
 
 env:
   REGISTRY: ghcr.io
@@ -59,11 +59,12 @@ jobs:
       - name: Update server
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.DEV_IP }}
+          host: ${{ secrets.PROD_IP }}
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.DEV_KEY }}
+          key: ${{ secrets.PROD_KEY }}
           script: |
             cd Backend
             sudo docker-compose stop follow-api
             sudo docker-compose pull follow-api
             sudo docker-compose up -d follow-api
+
